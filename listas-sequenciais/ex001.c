@@ -82,7 +82,7 @@ int buscaSentinela(LISTA* lista, TIPOCHAVE  chave){
     else return i;
 }
 
-//INSERÇÃO DE ELEMENTOS - ORDENADA
+//INSERÇÃO DE ELEMENTOS EM UMA LISTA ORDENADA
 bool inserirELementosListaOrdenada (LISTA* lista, REGISTRO registro){
     if(lista->nroElem >= MAX) return false;
     int posicao = lista->nroElem;

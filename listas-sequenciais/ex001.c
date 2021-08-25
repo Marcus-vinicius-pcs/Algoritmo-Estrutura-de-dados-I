@@ -17,7 +17,7 @@ typedef struct {
 } REGISTRO;
 
 typedef struct{
-    REGISTRO A[MAX];
+    REGISTRO A[MAX+1];
     int nroElem;
 } LISTA;
 
@@ -73,3 +73,41 @@ void reinicializarLista(LISTA* lista){
     lista->nroElem = 0;
 }
 
+//BUSCA POR ELEMENTO SENTINELA
+int buscaSentinela(LISTA* lista, TIPOCHAVE  chave){
+    int i = 0;
+    lista->A[lista->nroElem].chave = chave;
+    while(lista->A[i].chave != chave) i++;
+    if (i == lista->nroElem) return -1;
+    else return i;
+}
+
+//INSERÇÃO DE ELEMENTOS - ORDENADA
+bool inserirELementosListaOrdenada (LISTA* lista, REGISTRO registro){
+    if(lista->nroElem >= MAX) return false;
+    int posicao = lista->nroElem;
+    while (posicao > 0 && lista->A[posicao-1].chave > registro.chave)
+    {
+        lista->A[posicao] = lista->A[posicao-1];
+        posicao--;
+    }
+    lista->A[posicao] = registro;
+    lista->nroElem++;
+}
+
+//BUSCA BINÁRIA
+int buscaBinaria(LISTA* lista, TIPOCHAVE chave){
+    int esq, dir, meio;
+    esq = 0;
+    dir = lista->nroElem-1;
+    while (esq <= dir)
+    {
+        meio = ((esq+dir)/2);
+        if(lista->A[meio].chave == chave) return meio;
+        else {
+            if(lista->A[meio].chave < chave) esq = meio + 1;
+            else dir = meio - 1;
+        }
+    }
+    return -1;
+}

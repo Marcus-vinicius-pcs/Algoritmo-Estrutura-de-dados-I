@@ -28,6 +28,7 @@ typedef struct {
 
 void ordenar(LISTA* l){
     //encontrar a menor posição
+    
     int posicaoMenor, i, j;
     REGISTRO aux;
     for(i = 0; i < l->nroElem; i++)
@@ -35,6 +36,7 @@ void ordenar(LISTA* l){
         posicaoMenor = i;
         for (j = i + 1; j < l->nroElem; j++)
             if(l->A[j].chave < l->A[posicaoMenor].chave) posicaoMenor = j;
+    
     //realiza a troca entre os registros
         aux = l->A[i];
         l->A[i] = l->A[posicaoMenor];

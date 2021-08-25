@@ -49,7 +49,6 @@ int buscarPosicaoDoElemento(LISTA* lista, TIPOCHAVE chave){
 
 //iNSERÇÃO DE UM ELEMENTO EM UMA POSIÇÃO INDICADA PELO USUÁRIO
 bool insereElemento(LISTA* lista, REGISTRO registro, int posicao){
-    REGISTRO aux;
     if((lista->nroElem == MAX) || (posicao < 0) || (posicao > lista->nroElem)) return false;
         for (int i = lista->nroElem; i > posicao; i--) lista->A[i] = lista->A[i-1];
         lista->A[posicao] = registro;

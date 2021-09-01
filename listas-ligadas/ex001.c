@@ -1,4 +1,4 @@
-/* IMPLEMENTAÇÃO ESTÁTICA DE UMA LISTA LIGADA */
+//IMPLEMENTAÇÃO DE UMA LISTA LIGADA ESTÁTICA
 
 #include <stdio.h>
 #include <stdlib.h>

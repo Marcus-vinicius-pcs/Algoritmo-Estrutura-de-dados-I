@@ -30,8 +30,10 @@ typedef struct {
 
 /* INICIALIZAÇÃO 
 - Colocar todos os elementos na "lista de disponiveis";
+        - para isso, fazer com que todos os elementos apontem para um proximo. 
+        - e que o ultimo elemento aponte para um invalido 
 - variável dispo = 0
-- variável inicio = 0
+- variável inicio = INVALIDO 
 */
 void iniciaizar_lista(LISTA* li){
     int i;

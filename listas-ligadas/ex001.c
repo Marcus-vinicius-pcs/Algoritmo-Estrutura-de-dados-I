@@ -98,7 +98,7 @@ int buscaSequencialOrd(LISTA* li, TIPOCHAVE chave){
 /*
 INSERÇÃO DE UM ELEMENTO 
 - o usuário passa como parâmetro um registro a ser inserido na lista 
-- a inserção será ordenada pelo valor da chave do registro parrado e não será permitido elementos repitidos
+- a inserção será ordenada pelo valor da chave do registro parrado e não será permitido elementos repetidos
 - será necessário identificar entre quais elementos o novo elemento será inserido;
 - o novo elemento será inserido no lugar do primeiro que estiver na lista de disponíveis
 */

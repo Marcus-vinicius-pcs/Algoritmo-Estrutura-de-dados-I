@@ -76,7 +76,7 @@ PONT buscaSequencialExc(LISTA* li, TIPOCHAVE chave, PONT* ant){
 bool inserirElem(LISTA* li, REGISTRO reg){
     PONT ant, i;
     TIPOCHAVE chave = reg.chave;
-    i = buscaSequencialExc(li, chave, &ant);
+    i = buscaSequencialExc(li, reg.chave, &ant);
     if(i != NULL) return false; //isso significa que esse registro já existe na lista 
     i = (PONT) malloc(sizeof(ELEMENTO));
     i->reg = reg;

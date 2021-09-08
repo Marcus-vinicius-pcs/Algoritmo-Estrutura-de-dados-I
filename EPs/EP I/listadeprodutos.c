@@ -93,8 +93,8 @@ int consultarValorUnitario(PLISTA l, int id){
 
 
 PONT buscaAuxiliar (PLISTA l, int id, PONT* ant, int tipo, int quantidade, int valor){
-    *ant = l->LISTADELISTAS[tipo]->proxProd;
-    PONT i = l->LISTADELISTAS[tipo]->proxProd->proxProd;
+    *ant = l->LISTADELISTAS[tipo];
+    PONT i = l->LISTADELISTAS[tipo]->proxProd;
     int valorTotal = i->valorUnitario*i->quantidade;
     while(i != NULL && valorTotal < quantidade*valor){
         *ant = i;
@@ -112,8 +112,8 @@ bool inserirNovoProduto(PLISTA l, int id, int tipo, int quantidade, int valor){
     novo = buscaAuxiliar(l, id, &ant, tipo, quantidade, valor);
     if(novo != NULL) return false;
     if(ant->proxProd == NULL){
-        novo->proxProd = l->LISTADELISTAS[tipo]->proxProd->proxProd;
-        l->LISTADELISTAS[tipo]->proxProd->proxProd = novo;
+        novo->proxProd = l->LISTADELISTAS[tipo]->proxProd;
+        l->LISTADELISTAS[tipo]->proxProd = novo;
     } else {
         novo->proxProd = ant->proxProd;
         ant->proxProd = novo;

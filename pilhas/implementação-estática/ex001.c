@@ -30,7 +30,7 @@ int retornarElementos(PILHA* p){
 void imprimirPilha(PILHA* p){
     printf("PILHA: \"");
     for(int i = p->topo; i >= 0; i--)
-        printf("%i ", p->A[i]);
+        printf("%i ", p->A[i].chave);
     printf("\"\n");
 }
 

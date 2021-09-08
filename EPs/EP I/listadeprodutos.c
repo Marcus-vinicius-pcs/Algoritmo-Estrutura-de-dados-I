@@ -90,13 +90,27 @@ int consultarValorUnitario(PLISTA l, int id){
   }
   return 0;
 }
-
-
-PONT buscaAuxiliar (PLISTA l, int id, PONT* ant, int tipo, int quantidade, int valor){
+// RETORNAR O TIPO DE UM PRODUTO COM BASE NO SEU ID
+int retornarTipo(PLISTA l, int id){
+    int x;
+    PONT atual;
+    for(x=0; x<NUMTIPOS; x++){
+        atual = l->LISTADELISTAS[x]->proxProd;
+    while (atual) {
+      if (atual->id == id) return x;
+      atual = atual->proxProd;
+    }
+    }
+}
+// FAZ UMA BUSCA DE UM PRODUTO E RETORNA SEU ENDEREÇO E O SEU ANTECESSOR
+PONT buscaAuxiliar (PLISTA l, int id, PONT* ant){
+    int tipo = retornarTipo(l, id);
+    PONT aux = buscarID(l, id);
     *ant = l->LISTADELISTAS[tipo];
     PONT i = l->LISTADELISTAS[tipo]->proxProd;
-    int valorTotal = i->valorUnitario*i->quantidade;
-    while(i != NULL && valorTotal < quantidade*valor){
+    int valorTotalProduto = i->valorUnitario*i->quantidade;
+    int valorTotalAuxiliar = aux->valorUnitario*aux->quantidade;
+    while(i != NULL && valorTotalProduto < valorTotalAuxiliar){
         *ant = i;
         i = i->proxProd;
     }
@@ -109,7 +123,8 @@ bool inserirNovoProduto(PLISTA l, int id, int tipo, int quantidade, int valor){
     if((id < 0) || (quantidade < 0) || (valor < 0)) return false;
     if((tipo < 0) || (tipo >= NUMTIPOS)) return false;
     PONT ant, novo;
-    novo = buscaAuxiliar(l, id, &ant, tipo, quantidade, valor);
+    int valorTotal = quantidade*valor;
+    novo = buscaAuxiliar(l, id, &ant);
     if(novo != NULL) return false;
     if(ant->proxProd == NULL){
         novo->proxProd = l->LISTADELISTAS[tipo]->proxProd;
@@ -121,44 +136,25 @@ bool inserirNovoProduto(PLISTA l, int id, int tipo, int quantidade, int valor){
     return true;
 }
 
-int retornarTipo(PLISTA l, int id){
-    int x;
-    PONT atual;
-    for(x=0; x<NUMTIPOS; x++){
-        atual = l->LISTADELISTAS[x]->proxProd;
-    while (atual) {
-      if (atual->id == id) return x;
-      atual = atual->proxProd;
-    }
-    }
-}
-
 bool removerItensDeUmProduto(PLISTA l, int id, int quantidade){
-    PONT ant, aux, i, cont;
+    PONT ant, i;
     int tipo = retornarTipo(l, id);
-    aux = buscarID(l, id);
-    i = buscaAuxiliar(l, id, &ant, tipo, quantidade, aux->valorUnitario);
+    i = buscaAuxiliar(l, id, &ant);
     if((i == NULL) || (quantidade <= 0) || (quantidade > i->quantidade)) return false;
     i->quantidade = i->quantidade-quantidade;
     if(i->quantidade == 0){
         ant->proxProd = i->proxProd;
         free(i);
     } else {
-        cont = l->LISTADELISTAS[tipo];
-        while((i!=NULL) && ((i->quantidade*i->valorUnitario) < cont->quantidade*cont->valorUnitario))
-            cont = cont->proxProd;
-        i->proxProd = cont->proxProd;
-        cont->proxProd = i;
+        free(i);
+        i = inserirNovoProduto(l, i->id, tipo, i->quantidade, i->valorUnitario);
     }
     return true;
-    free(cont);
-    free(aux);
 }
 
 
 bool atualizarValorDoProduto(PLISTA l, int id, int valor){
+    PONT i = buscarID(l, id);
+    if((i == NULL) || (valor<=0)) return false;
 
-  /* COMPLETAR */
-
-  return false;
 }

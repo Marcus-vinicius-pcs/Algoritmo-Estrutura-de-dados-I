@@ -121,13 +121,38 @@ bool inserirNovoProduto(PLISTA l, int id, int tipo, int quantidade, int valor){
     return true;
 }
 
-
+int retornarTipo(PLISTA l, int id){
+    int x;
+    PONT atual;
+    for(x=0; x<NUMTIPOS; x++){
+        atual = l->LISTADELISTAS[x]->proxProd;
+    while (atual) {
+      if (atual->id == id) return x;
+      atual = atual->proxProd;
+    }
+    }
+}
 
 bool removerItensDeUmProduto(PLISTA l, int id, int quantidade){
-
-  /* COMPLETAR */
-
-  return false;
+    PONT ant, aux, i, cont;
+    int tipo = retornarTipo(l, id);
+    aux = buscarID(l, id);
+    i = buscaAuxiliar(l, id, &ant, tipo, quantidade, aux->valorUnitario);
+    if((i == NULL) || (quantidade <= 0) || (quantidade > i->quantidade)) return false;
+    i->quantidade = i->quantidade-quantidade;
+    if(i->quantidade == 0){
+        ant->proxProd = i->proxProd;
+        free(i);
+    } else {
+        cont = l->LISTADELISTAS[tipo];
+        while((i!=NULL) && ((i->quantidade*i->valorUnitario) < cont->quantidade*cont->valorUnitario))
+            cont = cont->proxProd;
+        i->proxProd = cont->proxProd;
+        cont->proxProd = i;
+    }
+    return true;
+    free(cont);
+    free(aux);
 }
 
 

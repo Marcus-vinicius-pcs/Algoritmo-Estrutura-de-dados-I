@@ -108,13 +108,12 @@ PONT buscaAuxiliar (PLISTA l, int id, PONT* ant){
     PONT aux = buscarID(l, id);
     *ant = l->LISTADELISTAS[tipo];
     PONT i = l->LISTADELISTAS[tipo]->proxProd;
-    int valorTotalProduto = i->valorUnitario*i->quantidade;
-    int valorTotalAuxiliar = aux->valorUnitario*aux->quantidade;
-    while(i != NULL && valorTotalProduto < valorTotalAuxiliar){
+    while(i != aux){
         *ant = i;
         i = i->proxProd;
     }
     if((i != NULL) && (i->id == id)) return i;
+    free(aux);
     return NULL;
 }
 

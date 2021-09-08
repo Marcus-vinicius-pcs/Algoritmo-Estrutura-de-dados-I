@@ -136,7 +136,7 @@ bool inserirNovoProduto(PLISTA l, int id, int tipo, int quantidade, int valor){
 }
 
 bool removerItensDeUmProduto(PLISTA l, int id, int quantidade){
-    PONT ant, i;
+    PONT ant, i, aux;
     int tipo = retornarTipo(l, id);
     i = buscaAuxiliar(l, id, &ant);
     if((i == NULL) || (quantidade <= 0) || (quantidade > i->quantidade)) return false;
@@ -145,8 +145,9 @@ bool removerItensDeUmProduto(PLISTA l, int id, int quantidade){
         ant->proxProd = i->proxProd;
         free(i);
     } else {
+        aux = i;
         free(i);
-        i = inserirNovoProduto(l, i->id, tipo, i->quantidade, i->valorUnitario);
+        inserirNovoProduto(l, aux->id, tipo, aux->quantidade, aux->valorUnitario);
     }
     return true;
 }

@@ -92,14 +92,33 @@ int consultarValorUnitario(PLISTA l, int id){
 }
 
 
-
+PONT buscaAuxiliar (PLISTA l, int id, PONT* ant, int tipo, int quantidade, int valor){
+    *ant = l->LISTADELISTAS[tipo]->proxProd;
+    PONT i = l->LISTADELISTAS[tipo]->proxProd->proxProd;
+    int valorTotal = i->valorUnitario*i->quantidade;
+    while(i != NULL && valorTotal < quantidade*valor){
+        *ant = i;
+        i = i->proxProd;
+    }
+    if((i != NULL) && (i->id == id)) return i;
+    return NULL;
+}
 
 
 bool inserirNovoProduto(PLISTA l, int id, int tipo, int quantidade, int valor){
-
-  /* COMPLETAR */
-
-  return false;
+    if((id < 0) || (quantidade < 0) || (valor < 0)) return false;
+    if((tipo < 0) || (tipo >= NUMTIPOS)) return false;
+    PONT ant, novo;
+    novo = buscaAuxiliar(l, id, &ant, tipo, quantidade, valor);
+    if(novo != NULL) return false;
+    if(ant->proxProd == NULL){
+        novo->proxProd = l->LISTADELISTAS[tipo]->proxProd->proxProd;
+        l->LISTADELISTAS[tipo]->proxProd->proxProd = novo;
+    } else {
+        novo->proxProd = ant->proxProd;
+        ant->proxProd = novo;
+    }
+    return true;
 }
 
 

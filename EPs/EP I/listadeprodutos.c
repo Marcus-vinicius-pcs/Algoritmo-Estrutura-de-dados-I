@@ -1,11 +1,11 @@
 /*********************************************************************/
 /**   ACH2023 - Algoritmos e Estruturas de Dados I                  **/
 /**   EACH-USP - Segundo Semestre de 2021                           **/
-/**   <turma> - Prof. Luciano Antonio Digiampietri                  **/
+/**   <294> - Prof. Luciano Antonio Digiampietri                    **/
 /**                                                                 **/
 /**   EP 1 - Lista Ligada de Produtos                               **/
 /**                                                                 **/
-/**   <nome do(a) aluno(a)>                   <numero USP>          **/
+/**   <Marcus Vinicius Pizzo Cognolatto Santos>        <12543478>   **/
 /**                                                                 **/
 /*********************************************************************/
 #include "listadeprodutos.h"

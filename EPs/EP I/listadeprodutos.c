@@ -105,7 +105,7 @@ int retornarTipo(PLISTA l, int id){
 PONT buscaAnt(PLISTA l, int valorTotal, PONT* ant, int tipo, int id){
     *ant = l->LISTADELISTAS[tipo];
     PONT atual = l->LISTADELISTAS[tipo]->proxProd;
-    while ((atual!=NULL) && (atual->quantidade*atual->valorUnitario <= valorTotal))
+    while ((atual!=NULL) && (atual->quantidade*atual->valorUnitario < valorTotal))
     {
         *ant = atual;
         atual = atual->proxProd;

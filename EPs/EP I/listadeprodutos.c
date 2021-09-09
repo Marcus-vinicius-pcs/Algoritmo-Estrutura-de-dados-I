@@ -102,54 +102,35 @@ int retornarTipo(PLISTA l, int id){
     }
     }
 }
-// FAZ UMA BUSCA DE UM PRODUTO E RETORNA SEU ENDEREÇO E O SEU ANTECESSOR
-PONT buscaAuxiliar (PLISTA l, int id, PONT* ant){
-    int tipo = retornarTipo(l, id);
-    PONT aux = buscarID(l, id);
+PONT buscaAnt(PLISTA l, int valorTotal, PONT* ant, int tipo, int id){
     *ant = l->LISTADELISTAS[tipo];
-    PONT i = l->LISTADELISTAS[tipo]->proxProd;
-    while(i != aux){
-        *ant = i;
-        i = i->proxProd;
-    }
-    if((i != NULL) && (i->id == id)) return i;
-    free(aux);
+    PONT atual = l->LISTADELISTAS[tipo]->proxProd;
+    while ((atual!=NULL) && (atual->quantidade*atual->valorUnitario <= valorTotal))
+    {
+        *ant = atual;
+        atual = atual->proxProd;
+    } 
+    if((atual!=NULL) && (atual->id == id)) return atual;
     return NULL;
 }
 
 
 bool inserirNovoProduto(PLISTA l, int id, int tipo, int quantidade, int valor){
-    if((id < 0) || (quantidade < 0) || (valor < 0)) return false;
-    if((tipo < 0) || (tipo >= NUMTIPOS)) return false;
-    PONT ant, novo;
-    int valorTotal = quantidade*valor;
-    novo = buscaAuxiliar(l, id, &ant);
-    if(novo != NULL) return false;
-    if(ant->proxProd == NULL){
-        novo->proxProd = l->LISTADELISTAS[tipo]->proxProd;
-        l->LISTADELISTAS[tipo]->proxProd = novo;
-    } else {
-        novo->proxProd = ant->proxProd;
-        ant->proxProd = novo;
-    }
-    return true;
+  if((id < 0) || (quantidade < 0) || (valor < 0) || (tipo < 0) || (tipo >= NUMTIPOS)) return false;
+  PONT novo, ant;
+  novo = buscaAnt(l, quantidade*valor, &ant, tipo, id);
+  if(novo != NULL) return false;
+  novo = (PONT) malloc(sizeof(REGISTRO));
+  novo->id = id;
+  novo->quantidade = quantidade;
+  novo->valorUnitario = valor;
+  novo->proxProd = ant->proxProd;
+  ant->proxProd = novo;
+  return true;
 }
 
 bool removerItensDeUmProduto(PLISTA l, int id, int quantidade){
-    PONT ant, i, aux;
-    int tipo = retornarTipo(l, id);
-    i = buscaAuxiliar(l, id, &ant);
-    if((i == NULL) || (quantidade <= 0) || (quantidade > i->quantidade)) return false;
-    i->quantidade = i->quantidade-quantidade;
-    if(i->quantidade == 0){
-        ant->proxProd = i->proxProd;
-        free(i);
-    } else {
-        aux = i;
-        free(i);
-        inserirNovoProduto(l, aux->id, tipo, aux->quantidade, aux->valorUnitario);
-    }
-    return true;
+    
 }
 
 

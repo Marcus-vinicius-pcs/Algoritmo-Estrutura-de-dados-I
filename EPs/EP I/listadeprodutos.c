@@ -142,7 +142,7 @@ bool removerItensDeUmProduto(PLISTA l, int id, int quantidade){
      free(i);
    } 
    else {
-     while((i != l->LISTADELISTAS[tipo]) && (i->quantidade*i->valorUnitario)){
+     while((i != l->LISTADELISTAS[tipo]) && (i->quantidade*i->valorUnitario < ant->quantidade*ant->valorUnitario)){
         buscaAnt(l, ant->valorUnitario*ant->quantidade, &aux, tipo, ant->id);
         ant->proxProd = i->proxProd;
         aux->proxProd = i;

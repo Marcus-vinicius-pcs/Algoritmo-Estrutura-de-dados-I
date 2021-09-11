@@ -220,7 +220,10 @@ bool removerItensDeUmProduto(PLISTA l, int id, int quantidade){
 
 
 bool atualizarValorDoProduto(PLISTA l, int id, int valor){
-    PONT i = buscarID(l, id);
-    if((i == NULL) || (valor<=0)) return false;
-
+  PONT i = buscarID(l, id);
+  int tipo = retornarTipo(l, id);
+  if((i == NULL) || (valor<=0)) return false;
+  i->valorUnitario = valor;
+  reorganizarLista(l, tipo);
+  return true;
 }

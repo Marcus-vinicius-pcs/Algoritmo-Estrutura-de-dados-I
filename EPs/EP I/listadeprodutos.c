@@ -102,6 +102,16 @@ int retornarTipo(PLISTA l, int id){
     }
     }
 }
+
+int retornaValorTotal(PLISTA l, int id){
+  int tipo = retornarTipo(l, id);
+  int valorTotal;
+  PONT atual = buscarID(l, id);
+  if(atual != NULL)
+    valorTotal = atual->quantidade * atual->valorUnitario;
+  return valorTotal;
+}
+
 PONT buscaAnt(PLISTA l, int valorTotal, PONT* ant, int tipo, int id){
     *ant = l->LISTADELISTAS[tipo];
     PONT atual = l->LISTADELISTAS[tipo]->proxProd;
@@ -129,25 +139,81 @@ bool inserirNovoProduto(PLISTA l, int id, int tipo, int quantidade, int valor){
   return true;
 }
 
+void reorganizarLista(PLISTA l, int tipo){
+  PONT a, b, c, d, r;
+  a = b = l->LISTADELISTAS[tipo];
+  while(b->proxProd){
+    c = d = b->proxProd;
+    while(d) {
+      if(b->valorUnitario*b->quantidade > d->quantidade*d->valorUnitario){
+        if(b->proxProd == d){
+          if(b == l->LISTADELISTAS[tipo]){
+            b->proxProd = d->proxProd;
+            d->proxProd = b;
+            r = b;
+            b = d;
+            d = r;
+            c = d;
+            l->LISTADELISTAS[tipo]->proxProd = b;
+            d = d->proxProd;
+          } else {
+            b->proxProd = d->proxProd;
+            d->proxProd = b;
+            a->proxProd = d;
+            r = b;
+            b = d;
+            d = r;
+            c = d;
+            d = d->proxProd;
+          }
+        } else {
+          if(b == l->LISTADELISTAS[tipo]) {
+            r = b->proxProd;
+            b->proxProd = d->proxProd;
+            d->proxProd = r;
+            c->proxProd = b;
+            r = b;
+            b = d;
+            d = r;
+            c = d;
+            d = d->proxProd;
+            l->LISTADELISTAS[tipo]->proxProd = b;
+          } else {
+            r = b->proxProd;
+            b->proxProd = d->proxProd;
+            d->proxProd = r;
+            c->proxProd = b;
+            a->proxProd = d;
+            r = b;
+            b = d;
+            c = d;
+            d = d->proxProd;
+          }
+        }
+      } else {
+        c = d;
+        d = d->proxProd;
+      }
+    } a = b;
+  b = b->proxProd;
+  } 
+}
+
 bool removerItensDeUmProduto(PLISTA l, int id, int quantidade){
    if((id < 0) && (quantidade < 0)) return false;
    PONT ant, i, aux;
    int tipo = retornarTipo(l, id);
+   int valorTotal = retornaValorTotal(l, id);
    i = buscarID(l, id);
+   buscaAnt(l, valorTotal, &ant, tipo, id);
    if((i == NULL) || (quantidade > i->quantidade)) return false;
-   buscaAnt(l, i->quantidade*i->valorUnitario, &ant, tipo, id);
-   i->quantidade -= quantidade;
+   i->quantidade = i->quantidade - quantidade;
    if(i->quantidade == 0){
      ant->proxProd = i->proxProd;
      free(i);
    } 
    else {
-     while((i != l->LISTADELISTAS[tipo]) && (i->quantidade*i->valorUnitario < ant->quantidade*ant->valorUnitario)){
-        buscaAnt(l, ant->valorUnitario*ant->quantidade, &aux, tipo, ant->id);
-        ant->proxProd = i->proxProd;
-        aux->proxProd = i;
-        i->proxProd= ant;
-      }
+     reorganizarLista(l, tipo);
    }
    return true;
 }

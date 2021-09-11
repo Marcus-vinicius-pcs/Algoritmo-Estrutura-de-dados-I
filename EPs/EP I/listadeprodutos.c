@@ -198,7 +198,39 @@ void reorganizarLista(PLISTA l, int tipo){
   b = b->proxProd;
   } 
 }
+/*
+void passarDados(PONT i, PONT j){
+  REGISTRO aux;
+  aux.id = j->id;
+  aux.quantidade = j->quantidade;
+  aux.valorUnitario = j->valorUnitario;
+  aux.proxProd = j->proxProd;
+  i->id = aux.id;
+  i->quantidade = aux.quantidade;
+  i->valorUnitario = aux.valorUnitario;
+  i->proxProd = aux.proxProd;
+}
 
+void reorganizarLista(PLISTA l, int tipo){
+  PONT i = l->LISTADELISTAS[tipo];
+  PONT y;
+  while(i){
+    PONT posicaoMenor = i;
+    PONT aux = i->proxProd;
+    while(aux){
+      if(posicaoMenor->quantidade*posicaoMenor->valorUnitario > aux->valorUnitario*aux->quantidade) 
+        posicaoMenor = aux;
+      aux = aux->proxProd;
+    }
+  i->proxProd = posicaoMenor->proxProd;
+  posicaoMenor->proxProd = i;
+  y = posicaoMenor;
+  posicaoMenor = i;
+  i = y;
+  i = i->proxProd;
+  }
+}
+*/
 bool removerItensDeUmProduto(PLISTA l, int id, int quantidade){
    if((id < 0) || (quantidade <= 0)) return false;
    PONT ant, i, aux;

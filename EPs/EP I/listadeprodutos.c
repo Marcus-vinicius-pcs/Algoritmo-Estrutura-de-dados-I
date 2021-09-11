@@ -200,7 +200,7 @@ void reorganizarLista(PLISTA l, int tipo){
 }
 
 bool removerItensDeUmProduto(PLISTA l, int id, int quantidade){
-   if((id < 0) && (quantidade < 0)) return false;
+   if((id < 0) || (quantidade <= 0)) return false;
    PONT ant, i, aux;
    int tipo = retornarTipo(l, id);
    int valorTotal = retornaValorTotal(l, id);

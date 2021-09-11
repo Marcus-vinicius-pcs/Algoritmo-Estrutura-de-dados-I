@@ -138,7 +138,7 @@ int main() {
   else printf("Atualizacao retornou false (9)\n");
   exibirLog(f);
 
- printf("%i ", retornaValorTotal(f, 3));
+
 
 
   return 0;

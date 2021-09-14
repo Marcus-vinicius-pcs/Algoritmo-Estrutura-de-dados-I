@@ -111,7 +111,7 @@ int retornaValorTotal(PLISTA l, int id){
     valorTotal = atual->quantidade * atual->valorUnitario;
   return valorTotal;
 }
-
+/*
 PONT buscaAnt(PLISTA l, int valorTotal, PONT* ant, int tipo, int id){
     *ant = l->LISTADELISTAS[tipo];
     PONT atual = l->LISTADELISTAS[tipo]->proxProd;
@@ -122,6 +122,16 @@ PONT buscaAnt(PLISTA l, int valorTotal, PONT* ant, int tipo, int id){
     } 
     if((atual!=NULL) && (atual->id == id)) return atual;
     return NULL;
+}*/
+PONT buscarAnt(PLISTA l, PONT* ant, int tipo, int id){
+  *ant = l->LISTADELISTAS[tipo];
+  PONT atual = l->LISTADELISTAS[tipo]->proxProd;
+  while(atual){
+    if(atual->id == id) return atual;
+    *ant = atual;
+    atual = atual->proxProd;
+  }
+  return NULL;
 }
 
 
@@ -138,7 +148,7 @@ bool inserirNovoProduto(PLISTA l, int id, int tipo, int quantidade, int valor){
   ant->proxProd = novo;
   return true;
 }
-
+/*
 void reorganizarLista(PLISTA l, int tipo){
   PONT a, b, c, d, r;
   a = b = l->LISTADELISTAS[tipo];
@@ -198,22 +208,24 @@ void reorganizarLista(PLISTA l, int tipo){
   b = b->proxProd;
   } 
 }
-/*
-void passarDados(PONT i, PONT j){
+void trocarDados(PONT i, PONT   j){
   REGISTRO aux;
-  aux.id = j->id;
-  aux.quantidade = j->quantidade;
-  aux.valorUnitario = j->valorUnitario;
-  aux.proxProd = j->proxProd;
-  i->id = aux.id;
-  i->quantidade = aux.quantidade;
-  i->valorUnitario = aux.valorUnitario;
-  i->proxProd = aux.proxProd;
+  aux.id = i->id;
+  aux.quantidade = i->quantidade;
+  aux.valorUnitario = i->valorUnitario;
+  aux.proxProd = i->proxProd;
+  i->id = j->id;
+  i->quantidade = j->quantidade;
+  i->valorUnitario = j->valorUnitario;
+  i->proxProd = j->proxProd;
+  j->id = aux.id;
+  j->quantidade = aux.quantidade;
+  j->valorUnitario = aux.valorUnitario;
+  j->proxProd = aux.proxProd;
 }
 
 void reorganizarLista(PLISTA l, int tipo){
-  PONT i = l->LISTADELISTAS[tipo];
-  PONT y;
+  PONT i = l->LISTADELISTAS[tipo]->proxProd;
   while(i){
     PONT posicaoMenor = i;
     PONT aux = i->proxProd;
@@ -222,15 +234,11 @@ void reorganizarLista(PLISTA l, int tipo){
         posicaoMenor = aux;
       aux = aux->proxProd;
     }
-  i->proxProd = posicaoMenor->proxProd;
-  posicaoMenor->proxProd = i;
-  y = posicaoMenor;
-  posicaoMenor = i;
-  i = y;
+  trocarDados(i, posicaoMenor);
   i = i->proxProd;
   }
-}
-*/
+}*/
+
 bool removerItensDeUmProduto(PLISTA l, int id, int quantidade){
    if((id < 0) || (quantidade <= 0)) return false;
    PONT ant, i, aux;

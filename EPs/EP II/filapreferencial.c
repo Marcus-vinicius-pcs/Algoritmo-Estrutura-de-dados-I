@@ -71,12 +71,35 @@ bool consultarPreferencial(PFILA f, int id){
 
 
 bool inserirPessoaNaFila(PFILA f, int id, bool ehPreferencial){
+	if((id < 0) || buscarID(f, id)!=NULL) return false;
+	PONT novo = (PONT) malloc(sizeof(ELEMENTO));
+	novo->id = id;
+	novo->ehPreferencial = ehPreferencial;
+	int tam = tamanho(f);
+	if(tam == 0){
+		f->cabeca->prox = novo;
+		novo->ant = f->cabeca;
+		novo->prox = f->cabeca;
+		if(!(ehPreferencial)) f->inicioNaoPref = novo;
+	} else {
+		if(f->inicioNaoPref == f->cabeca){
+			if(ehPreferencial){
+				novo->prox = f->cabeca->prox;
+				f->cabeca->prox->ant = novo;
+				novo->ant = f->cabeca;
+				f->cabeca->prox = novo;
+				f->inicioNaoPref = novo->prox;
+			} else {
+				novo->prox = f->cabeca;
+				f->cabeca->prox->prox = novo;
+				novo->ant = f->cabeca->prox;
+			}
+		}
+		
+	}
 
-	/* COMPLETE */
 
-
-
-	return false;
+	return true;
 }
 
 bool atenderPrimeiraDaFila(PFILA f, int* id){

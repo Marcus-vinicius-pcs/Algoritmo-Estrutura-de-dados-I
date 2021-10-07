@@ -111,19 +111,6 @@ bool inserirPessoaNaFila(PFILA f, int id, bool ehPreferencial){
 	novo->id = id;
 	novo->ehPreferencial = ehPreferencial;
 	int tam = tamanho(f);
-	/*
-	Caso 1: Fila esta vazia
-	Caso 2: Fila contém apenas pessoas não preferenciais 
-			- É preferencial --> será o primeiro da fila 
-			- Não é preferencial --> será o último
-	Caso 3: Fila contém apenas pessoas preferenciais
-			- É preferencial --> será o último da fila 
-			- Não é preferencial --> será o último da fila
-	Caso 4: Fila contém preferenciais e não preferenciais
-			- É preferencial --> será o último dos preferenciais
-			-Não é preferencial --> será o último da fila 
-	*/
-//Caso 1 
 	if(tam == 0) insereFilaVazia(f, novo);
 	else {
 		if(!ehPreferencial) insereNaoPreferencial(f, novo);

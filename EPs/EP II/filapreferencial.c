@@ -76,29 +76,51 @@ bool inserirPessoaNaFila(PFILA f, int id, bool ehPreferencial){
 	novo->id = id;
 	novo->ehPreferencial = ehPreferencial;
 	int tam = tamanho(f);
+	/*
+	Caso 1: Fila esta vazia
+	Caso 2: Fila contém apenas pessoas não preferenciais 
+			- É preferencial --> será o primeiro da fila 
+			- Não é preferencial --> será o último
+	Caso 3: Fila contém apenas pessoas preferenciais
+			- É preferencial --> será o último da fila 
+			- Não é preferencial --> será o último da fila
+	Caso 4: Fila contém preferenciais e não preferenciais
+			- É preferencial --> será o último dos preferenciais
+			-Não é preferencial --> será o último da fila 
+	*/
+//Caso 1 
 	if(tam == 0){
-		f->cabeca->prox = novo;
 		novo->ant = f->cabeca;
 		novo->prox = f->cabeca;
-		if(!(ehPreferencial)) f->inicioNaoPref = novo;
-	} else {
-		if(f->inicioNaoPref == f->cabeca){
+		f->cabeca->prox = novo;
+		f->cabeca->ant = novo;
+		if(!ehPreferencial) f->inicioNaoPref = novo;
+	} else { 
+		if(f->inicioNaoPref != f->cabeca){ //caso 2
 			if(ehPreferencial){
-				novo->prox = f->cabeca->prox;
-				f->cabeca->prox->ant = novo;
+				novo->prox = f->inicioNaoPref;
+				f->inicioNaoPref->ant = novo;
 				novo->ant = f->cabeca;
-				f->cabeca->prox = novo;
-				f->inicioNaoPref = novo->prox;
 			} else {
 				novo->prox = f->cabeca;
-				f->cabeca->prox->prox = novo;
-				novo->ant = f->cabeca->prox;
+				novo->ant = f->cabeca->ant;
+				f->cabeca->ant = novo;
 			}
+		} else { // caso 3 
+			novo->prox = f->cabeca;
+			novo->ant = f->cabeca->ant;
+			f->cabeca->ant = novo;
 		}
-		
+		if((ehPreferencial) && (f->inicioNaoPref != f->cabeca)){ //caso 4
+			novo->prox = f->inicioNaoPref;
+			novo->ant = f->inicioNaoPref->ant;
+			f->inicioNaoPref->ant->prox = novo;
+		} else { 
+			novo->prox = f->cabeca;
+			novo->ant = f->cabeca->ant;
+			f->cabeca->ant = novo;
+		}
 	}
-
-
 	return true;
 }
 

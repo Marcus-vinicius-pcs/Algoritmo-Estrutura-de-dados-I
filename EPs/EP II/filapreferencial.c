@@ -68,7 +68,42 @@ bool consultarPreferencial(PFILA f, int id){
 	return -1;
 }
 
+void insereFilaVazia(PFILA f, PONT el){
+	if(!el->ehPreferencial) f->inicioNaoPref = el;
+	el->prox = f->cabeca;
+	el->ant = f->cabeca;
+	f->cabeca->prox = el;
+	f->cabeca->ant = el;
+}
 
+void inserePreferencial(PFILA f, PONT el){
+	PONT atual = f->cabeca;
+	if(f->inicioNaoPref!=f->cabeca){
+		while(atual->prox != f->inicioNaoPref)
+			atual = atual->prox;
+		el->ant = atual;
+		el->prox = f->inicioNaoPref;
+		atual->prox = el;
+		f->inicioNaoPref->ant = el;
+	} else {
+		while(atual->prox != f->cabeca)
+			atual = atual->prox;
+		el->ant = atual;
+		el->prox = f->cabeca;
+		atual->prox = el;
+		f->cabeca->ant = el;
+	}
+}
+
+void insereNaoPreferencial(PFILA f, PONT el){
+	PONT atual = f->inicioNaoPref;
+	while(atual->prox != f->cabeca)
+		atual = atual->prox;
+	el->ant = atual;
+	el->prox = f->cabeca;
+	atual->prox = el;
+	f->cabeca->ant = el;
+}
 
 bool inserirPessoaNaFila(PFILA f, int id, bool ehPreferencial){
 	if((id < 0) || buscarID(f, id)!=NULL) return false;
@@ -89,40 +124,10 @@ bool inserirPessoaNaFila(PFILA f, int id, bool ehPreferencial){
 			-Não é preferencial --> será o último da fila 
 	*/
 //Caso 1 
-	if(tam == 0){
-		novo->prox = f->cabeca;
-		novo->ant = f->cabeca;
-		f->cabeca->prox = novo;
-		f->cabeca->ant = novo;
-		if(!ehPreferencial) f->inicioNaoPref = novo;
-	} else {
-		if(f->inicioNaoPref == f->cabeca){
-			if(ehPreferencial){
-				novo->prox = f->cabeca;
-				novo->ant = f->cabeca->ant;
-				f->cabeca->ant->prox = novo;
-				f->cabeca->ant = novo;
-			} else {
-				novo->prox = f->cabeca;
-				novo->ant = f->cabeca->ant;
-				f->cabeca->ant->prox = novo;
-				f->cabeca->ant = novo;
-				f->inicioNaoPref = novo;
-			}
-		} else {
-			novo->prox = f->cabeca->prox;
-			novo->ant = f->cabeca;
-			f->cabeca->prox = novo;
-		}
-		if(ehPreferencial){
-			novo->prox = f->inicioNaoPref;
-			novo->ant = f->inicioNaoPref->ant;
-			f->inicioNaoPref->ant->prox = novo;
-		} else {
-			novo->prox = f->cabeca;
-			novo->ant = f->cabeca->ant;
-			f->cabeca->ant = novo;
-		}
+	if(tam == 0) insereFilaVazia(f, novo);
+	else {
+		if(!ehPreferencial) insereNaoPreferencial(f, novo);
+		else inserePreferencial(f, novo);
 	}
 	return true;
 }

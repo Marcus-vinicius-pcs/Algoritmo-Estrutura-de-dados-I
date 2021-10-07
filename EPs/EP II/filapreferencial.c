@@ -90,32 +90,35 @@ bool inserirPessoaNaFila(PFILA f, int id, bool ehPreferencial){
 	*/
 //Caso 1 
 	if(tam == 0){
-		novo->ant = f->cabeca;
 		novo->prox = f->cabeca;
+		novo->ant = f->cabeca;
 		f->cabeca->prox = novo;
 		f->cabeca->ant = novo;
 		if(!ehPreferencial) f->inicioNaoPref = novo;
-	} else { 
-		if(f->inicioNaoPref != f->cabeca){ //caso 2
+	} else {
+		if(f->inicioNaoPref == f->cabeca){
 			if(ehPreferencial){
-				novo->prox = f->inicioNaoPref;
-				f->inicioNaoPref->ant = novo;
-				novo->ant = f->cabeca;
+				novo->prox = f->cabeca;
+				novo->ant = f->cabeca->ant;
+				f->cabeca->ant->prox = novo;
+				f->cabeca->ant = novo;
 			} else {
 				novo->prox = f->cabeca;
 				novo->ant = f->cabeca->ant;
+				f->cabeca->ant->prox = novo;
 				f->cabeca->ant = novo;
+				f->inicioNaoPref = novo;
 			}
-		} else { // caso 3 
-			novo->prox = f->cabeca;
-			novo->ant = f->cabeca->ant;
-			f->cabeca->ant = novo;
+		} else {
+			novo->prox = f->cabeca->prox;
+			novo->ant = f->cabeca;
+			f->cabeca->prox = novo;
 		}
-		if((ehPreferencial) && (f->inicioNaoPref != f->cabeca)){ //caso 4
+		if(ehPreferencial){
 			novo->prox = f->inicioNaoPref;
 			novo->ant = f->inicioNaoPref->ant;
 			f->inicioNaoPref->ant->prox = novo;
-		} else { 
+		} else {
 			novo->prox = f->cabeca;
 			novo->ant = f->cabeca->ant;
 			f->cabeca->ant = novo;

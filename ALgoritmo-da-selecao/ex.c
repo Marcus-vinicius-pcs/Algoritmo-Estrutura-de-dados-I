@@ -30,17 +30,33 @@ void QuickSort(int A[], int n){
 
 int Selecao1(int A[], int i, int n){
 	QuickSort(A, n);
-	return A[i];
+	return A[i-1];
+}
+
+int Selecao2(int A[], int i, int n){
+    int q = Particao(A, n);
+    if(n == 1)
+        return A[i-1];
+    if(i < q){
+        return Selecao2(A, i, q-1);
+    } else if (i > q) {
+        return Selecao2(&A[q+1], i-(q+1), n);
+    }
+    return A[q-1];
 }
 
 int main(){
-    int A[6] = {1,4,7,54,3,0,9}; //n=7
+    int A[7] = {1,4,7,54,3,0,9}; //n=7
     for (int i=0; i<7; i++)
         printf("%i ", A[i]);
-    print("\n\n");
-    QuickSort(A, 7);
+    printf("\n\n");
+    /*QuickSort(A, 7);
     for (int i=0; i<7; i++)
         printf("%i ", A[i]);
-    print("\n\n");
+    printf("\n\n");*/
+
+	printf("%i ", Selecao1(A, 7, 7));
+	printf("\n\n");
+	printf("%i ", Selecao2(A, 7, 7));
     return 0;
 }

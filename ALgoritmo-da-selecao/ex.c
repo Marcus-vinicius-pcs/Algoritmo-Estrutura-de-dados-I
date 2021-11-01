@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+
 int Particao(int A[], int n){
     int pivo = A[n-1];
     int i = -1;
@@ -46,17 +47,22 @@ int Selecao2(int A[], int i, int n){
 }
 
 int main(){
-    int A[7] = {1,4,7,54,3,0,9}; //n=7
+    /*int A[7] = {1,4,7,54,3,0,9}; //n=7
     for (int i=0; i<7; i++)
         printf("%i ", A[i]);
     printf("\n\n");
-    /*QuickSort(A, 7);
+    QuickSort(A, 7);
     for (int i=0; i<7; i++)
         printf("%i ", A[i]);
-    printf("\n\n");*/
+    printf("\n\n");
 
 	printf("%i ", Selecao1(A, 7, 7));
 	printf("\n\n");
 	printf("%i ", Selecao2(A, 7, 7));
+*/
+
+    int A[] = {gerador(1)};
+
+    printf("%i ", Selecao1(A, 6, 10000));
     return 0;
 }

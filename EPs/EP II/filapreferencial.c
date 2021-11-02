@@ -119,14 +119,43 @@ bool inserirPessoaNaFila(PFILA f, int id, bool ehPreferencial){
 	return true;
 }
 
-bool atenderPrimeiraDaFila(PFILA f, int* id){
 
-	/* COMPLETE */
-
-
-	return false;
+void atendeFilaComUma(PFILA f){
+	f->cabeca->ant = f->cabeca;
+	f->cabeca->prox = f->cabeca;
 }
 
+void atendePreferencial(PFILA f){
+	f->cabeca->prox->prox->ant = f->cabeca;
+	f->cabeca->prox = f->cabeca->prox->prox;
+}
+
+void atendeNaoPreferencial(PFILA f){
+	f->cabeca->prox = f->inicioNaoPref->prox;
+	f->inicioNaoPref->prox->ant = f->cabeca->prox;
+}
+
+void atendeNormal(PFILA f){
+	f->cabeca->prox->prox->ant= f->cabeca;
+	f->cabeca->prox = f->cabeca->prox->prox;
+}
+
+bool atenderPrimeiraDaFila(PFILA f, int* id){
+	if(tamanho(f) == 0) return false;
+	PONT el = f->cabeca->prox;
+	*id = el->id;
+	if(tamanho(f) == 1){
+		if(f->inicioNaoPref == el)
+			f->inicioNaoPref = f->cabeca;
+		atendeFilaComUma(f);
+	}
+	if(f->inicioNaoPref == f->cabeca)
+		atendePreferencial(f);
+	if((f->inicioNaoPref != f->cabeca) && (f->inicioNaoPref != el))
+		atendeNaoPreferencial(f);
+	atendeNormal(f);
+	return true;
+}
 
 bool desistirDaFila(PFILA f, int id){
 
@@ -135,3 +164,18 @@ bool desistirDaFila(PFILA f, int id){
 
 	return false;
 }
+
+	/*if(tamanho(f) == 1){
+		f->cabeca->prox = f->cabeca;
+		f->cabeca->ant = f->cabeca;
+		f->inicioNaoPref = f->cabeca;
+	} else {
+	if(!el->ehPreferencial){
+		f->inicioNaoPref = el->prox;
+		f->cabeca->prox = f->inicioNaoPref;
+		f->inicioNaoPref->ant = f->cabeca;
+	}
+	f->cabeca->prox = el->prox;
+	el->prox->ant = f->cabeca;
+	}
+	free(el);*/

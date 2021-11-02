@@ -113,47 +113,58 @@ bool inserirPessoaNaFila(PFILA f, int id, bool ehPreferencial){
 	int tam = tamanho(f);
 	if(tam == 0) insereFilaVazia(f, novo);
 	else {
-		if(!ehPreferencial) insereNaoPreferencial(f, novo);
+		if(!ehPreferencial){
+			insereNaoPreferencial(f, novo);
+			if(tam > 0 && f->inicioNaoPref == f->cabeca)
+				f->inicioNaoPref = novo;
+			}
 		else inserePreferencial(f, novo);
 	}
 	return true;
 }
 
 
-void atendeFilaComUma(PFILA f){
-	f->cabeca->ant = f->cabeca;
-	f->cabeca->prox = f->cabeca;
-}
-
-void atendePreferencial(PFILA f){
-	f->cabeca->prox->prox->ant = f->cabeca;
-	f->cabeca->prox = f->cabeca->prox->prox;
-}
-
-void atendeNaoPreferencial(PFILA f){
-	f->cabeca->prox = f->inicioNaoPref->prox;
-	f->inicioNaoPref->prox->ant = f->cabeca->prox;
-}
-
-void atendeNormal(PFILA f){
-	f->cabeca->prox->prox->ant= f->cabeca;
-	f->cabeca->prox = f->cabeca->prox->prox;
-}
 
 bool atenderPrimeiraDaFila(PFILA f, int* id){
 	if(tamanho(f) == 0) return false;
 	PONT el = f->cabeca->prox;
 	*id = el->id;
-	if(tamanho(f) == 1){
-		if(f->inicioNaoPref == el)
-			f->inicioNaoPref = f->cabeca;
-		atendeFilaComUma(f);
+	if(tamanho(f) == 1){ // soh um elemento na fila
+		
+		f->cabeca->ant = f->cabeca;
+		f->cabeca->prox = f->cabeca;
+		f->inicioNaoPref = el->ant;
+		free(el);
+
+	} else{
+
+			if((f->inicioNaoPref == f->cabeca) && (tamanho(f) > 1)){ //soh tem preferencial
+				f->cabeca->prox = el->prox;
+				f->cabeca->prox->ant = f->cabeca;
+				free(el);
+
+			} else{
+				
+				if((f->inicioNaoPref == el) && (tamanho(f) > 1)){ //soh tem  nao preferencial 
+					el = f->inicioNaoPref;
+					f->cabeca->prox = el->prox;
+					el->prox->ant = f->cabeca;
+					f->inicioNaoPref = el->prox;
+					free(el);
+				}
+
+			 else {
+
+				f->cabeca->prox = el->prox;
+				el->prox->ant= f->cabeca;
+				//if(el == f->inicioNaoPref)
+					f->inicioNaoPref = el->prox;
+				free(el);
+
+		}
 	}
-	if(f->inicioNaoPref == f->cabeca)
-		atendePreferencial(f);
-	if((f->inicioNaoPref != f->cabeca) && (f->inicioNaoPref != el))
-		atendeNaoPreferencial(f);
-	atendeNormal(f);
+	}
+	
 	return true;
 }
 

@@ -51,12 +51,9 @@ int main(int argc, char const *argv[]) {
   if(sorted) qsort(array, size, sizeof(int), cmp);
 
   printf("%i\n", size);
-/*
-  for(i = 0; i < size; i++)
-    printf("%i\n", array[i]);
-*/
 
-printf("%i " Selecao1(&array, 6, size));
+
+
 
   return 0;
 }

@@ -169,11 +169,56 @@ bool atenderPrimeiraDaFila(PFILA f, int* id){
 }
 
 bool desistirDaFila(PFILA f, int id){
+	PONT el = buscarID(f, id), aux, aux1;
+	if(el == NULL) return false;
+	if(tamanho(f) == 0) return false;
+	if(tamanho(f) == 1){
+		f->cabeca->prox = f->cabeca;
+		f->cabeca->ant = f->cabeca;
+		f->inicioNaoPref = f->cabeca;
+		free(el);
+	} else {
 
-	/* COMPLETE */
+		if(el->ant == f->cabeca){
+			f->cabeca->prox = el->prox;
+			el->prox->ant = f->cabeca;
+			free(el);
+		} else {
 
 
-	return false;
+			if(f->inicioNaoPref == el){
+				aux = el->prox;
+				aux1 = el->ant;
+				el->ant->prox = aux;
+				aux->ant = aux1;
+				free(el);
+				f->inicioNaoPref = aux;
+			} else {
+
+				if(f->inicioNaoPref->ant == el){
+					aux = el->ant;
+					aux1 = el->prox;
+					el->ant->prox = aux1;
+					aux1->ant = aux;
+					free(el);
+				} else {
+
+
+					if(f->cabeca->ant == el){
+						aux = el->ant;
+						aux->prox = f->cabeca;
+						f->cabeca->ant = aux;
+						free(el);
+					} else {
+						aux = el->ant;
+						el->ant->prox = el->prox;
+						el->prox->ant = aux;
+					}
+				}
+			}
+		}
+	}
+	return true;
 }
 
 	/*if(tamanho(f) == 1){

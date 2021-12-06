@@ -220,18 +220,3 @@ bool desistirDaFila(PFILA f, int id){
 	}
 	return true;
 }
-
-	/*if(tamanho(f) == 1){
-		f->cabeca->prox = f->cabeca;
-		f->cabeca->ant = f->cabeca;
-		f->inicioNaoPref = f->cabeca;
-	} else {
-	if(!el->ehPreferencial){
-		f->inicioNaoPref = el->prox;
-		f->cabeca->prox = f->inicioNaoPref;
-		f->inicioNaoPref->ant = f->cabeca;
-	}
-	f->cabeca->prox = el->prox;
-	el->prox->ant = f->cabeca;
-	}
-	free(el);*/

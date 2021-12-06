@@ -5,7 +5,7 @@
 /**                                                                 **/
 /**   EP 2 - Fila Preferencial                                      **/
 /**                                                                 **/
-/**   <nome do(a) aluno(a)>                   <numero USP>          **/
+/**   <Marcus Vinicius Pizzo Cognolatto Santos>      <12543478>     **/
 /**                                                                 **/
 /*********************************************************************/
 

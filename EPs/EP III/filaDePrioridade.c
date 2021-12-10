@@ -116,25 +116,51 @@ bool aumentarPrioridade(PFILA f, int id, float novaPrioridade){
 }
 
 bool reduzirPrioridade(PFILA f, int id, float novaPrioridade){
-  bool res = false;
-  
-  /* COMPLETAR */
-  
-  return res;
+  if((id < 0) || (id >= MAX)) return false;
+  if(!buscaId(f, id)) return false;
+  PONT el;
+  for(int i = 0; i < f->elementosNoHeap; i++){
+    if(id == f->heap[i]->id){
+      el = f->heap[i];
+    }
+  }
+  if(el->prioridade <= novaPrioridade) return false;
+
+  el->prioridade = novaPrioridade;
+  for(int i = 0; i < f->elementosNoHeap; i++){
+    if(f->heap[i]->prioridade > el->prioridade && i > el->posicao)
+      refazHeapMaximo(f, f->heap[i]);
+  }
+}
+
+int encontraMax(PFILA f){
+  PONT max = f->heap[0];
+  for(int i = 0; i < f->elementosNoHeap; i++){
+    if(f->heap[i]->prioridade > max->prioridade);
+      max = f->heap[i];
+  }
+  return max->posicao;
 }
 
 PONT removerElemento(PFILA f){
-  PONT res = NULL;
-  
-  /* COMPLETAR */
-  
+  if(tamanho(f) == 0) return NULL;
+  PONT res = f->heap[0];
+  swapStruct(f->heap[0], f->heap[f->elementosNoHeap - 1]);
+  f->heap[f->elementosNoHeap - 1] = NULL;
+  int max = encontraMax(f);
+  refazHeapMaximo(f, f->heap[max]);
   return res;
 }
 
 bool consultarPrioridade(PFILA f, int id, float* resposta){
-  bool res = false;
-  
-  /* COMPLETAR */
-  
-  return res;
+  if((id < 0) || (id >= MAX)) return false;
+  if(!buscaId(f, id)) return false;
+  PONT el;
+  for(int i = 0; i < f->elementosNoHeap; i++){
+    if(id == f->heap[i]->id){
+      el = f->heap[i];
+    }
+  }
+  *resposta = el->prioridade;
+  return true;
 }

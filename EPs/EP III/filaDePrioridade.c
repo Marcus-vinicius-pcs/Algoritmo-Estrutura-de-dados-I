@@ -142,9 +142,27 @@ int encontraMax(PFILA f){
   return max->posicao;
 }
 
+void heapifyRemocao(PFILA f, PONT i){
+  int max = i->posicao;
+  int l = esq(f, i);
+  int r = dir(f, i);
+  if((l < f->elementosNoHeap) && (f->heap[l]->prioridade > f->heap[max]->prioridade))
+    max = l;
+  if((r < f->elementosNoHeap) && (f->heap[r]->prioridade > f->heap[max]->prioridade))
+    max = r;
+  if(max != i->posicao){
+    swapStruct(f->heap[max], f->heap[i->posicao]);
+
+    heapifyRemocao(f, f->heap[max]);
+  }
+}
+
 PONT removerElemento(PFILA f){
   if(tamanho(f) == 0) return NULL;
-  PONT res = f->heap[0];
+  PONT res;
+  res->id = f->heap[0]->id;
+  res->posicao = f->heap[0]->posicao;
+  res->prioridade = f->heap[0]->prioridade;
   swapStruct(f->heap[0], f->heap[f->elementosNoHeap - 1]);
   f->heap[f->elementosNoHeap - 1] = NULL;
   int max = encontraMax(f);

@@ -101,11 +101,18 @@ bool inserirElemento(PFILA f, int id, float prioridade){
 }
 
 bool aumentarPrioridade(PFILA f, int id, float novaPrioridade){
-  bool res = false;
-  
-  /* COMPLETAR */
-  
-  return res;
+  if((id < 0) || (id >= MAX)) return false;
+  if(!buscaId(f, id)) return false;
+  PONT el;
+  for(int i = 0; i < f->elementosNoHeap; i++){
+    if(id == f->heap[i]->id){
+      el = f->heap[i];
+    }
+  }
+  if(el->prioridade >= novaPrioridade) return false;
+  el->prioridade = novaPrioridade;
+  refazHeapMaximo(f, f->heap[el->posicao]);
+  return true;
 }
 
 bool reduzirPrioridade(PFILA f, int id, float novaPrioridade){

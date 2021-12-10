@@ -1,11 +1,11 @@
 /*********************************************************************/
 /**   ACH2023 - Algoritmos e Estruturas de Dados I                  **/
 /**   EACH-USP - Segundo Semestre de 2021                           **/
-/**   <turma> - Prof. Luciano Antonio Digiampietri                  **/
+/**   <294> - Prof. Luciano Antonio Digiampietri                    **/
 /**                                                                 **/
 /**   EP3 - Fila de Prioridade (utilizando heap)                    **/
 /**                                                                 **/
-/**   <nome do(a) aluno(a)>                   <numero USP>          **/
+/**   <Marcus Vinicius Pizzo Cognolatto Santos>      <12543478>     **/
 /**                                                                 **/
 /*********************************************************************/
 
@@ -54,48 +54,39 @@ bool buscaId(PFILA f, int id){
     }
     return false;
 }
-PONT esq(PFILA f, PONT atual){
-    return f->heap[2*atual->posicao];
+int esq(PFILA f, PONT atual){
+    return 2*atual->posicao + 1;
 }
 
-PONT dir(PFILA f, PONT atual){
-    return f->heap[2*atual->posicao - 1];
+int dir(PFILA f, PONT atual){
+    return 2*atual->posicao + 2;
 }
 
-PONT pai(PFILA f, PONT atual){
-    return f->heap[atual->posicao/2];
-}
-
-void passaDados(PONT i, PONT j){
-    PONT aux;
-    aux->id = i->id;
-    aux->prioridade = i->prioridade;
-    aux->posicao = i->posicao;
-    i->id = j->id;
-    i->prioridade = j->prioridade;
-    i->posicao = j->posicao;
-    j->id = aux->id;
-    j->prioridade = aux->prioridade;
-    j->posicao = i->posicao;
+int pai(PFILA f, PONT atual){
+    return (atual->posicao - 1)/2;
 }
 
 void refazHeapMaximo(PFILA f, PONT atual){
-    PONT l = esq(f, atual);
-    PONT r = dir(f, atual);
-    PONT maior = atual;
-    if((l <= tamanho(f)) && (l->prioridade > maior->prioridade))
-        maior = l;
-    if((r <= tamanho(f)) && (r->prioridade > maior->prioridade))
-        maior = r;
-    if(maior != atual){
-        passaDados(atual, maior);
+    int tam = tamanho(f);
+    int max = atual->posicao;
+    int l = esq(f, atual);
+    int r = dir(f, atual);
+    if((f->heap[l]->prioridade > f->heap[max]->prioridade) && (l < tam))
+      max = l;
+    if((f->heap[r]->prioridade > f->heap[max]->prioridade) && (r < tam))
+      max = r;
+    if(max != atual){
+      PONT swap = f->heap[atual->posicao];
+      f->heap[atual->posicao] = f->heap[max];
+      f->heap[max] = swap;
     }
-    refazHeapMaximo(f, maior);
+    refazHeapMaximo(f, max);
 }
 
 bool inserirElemento(PFILA f, int id, float prioridade){
   if((id >= MAX) || (id < 0)) return false;
   if(buscaId(f, id)) return false;
+  int tam = tamanho(f);
   PONT novo = (PONT) malloc(sizeof(ELEMENTO));
   novo->id = id;
   novo->prioridade = prioridade;
@@ -104,6 +95,7 @@ bool inserirElemento(PFILA f, int id, float prioridade){
       f->heap[0] = novo;
       f->referencias[MAX-2] = novo;
   } else {
+      f->heap[tam] = novo;
       refazHeapMaximo(f, novo);
   }
   f->elementosNoHeap++;

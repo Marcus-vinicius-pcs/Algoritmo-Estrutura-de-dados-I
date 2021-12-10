@@ -38,11 +38,7 @@ bool exibirLog(PFILA f){
 }
 
 int tamanho(PFILA f){
-  int tam = 0;
-  
-  tam = f->elementosNoHeap;
-  
-  return tam;
+  return f->elementosNoHeap;
 }
 
 bool buscaId(PFILA f, int id){
@@ -60,44 +56,46 @@ int esq(PFILA f, PONT atual){
 
 int dir(PFILA f, PONT atual){
     return 2*atual->posicao + 2;
+    printf("dir\n");
 }
 
 int pai(PFILA f, PONT atual){
     return (atual->posicao - 1)/2;
 }
 
+void swapStruct(PONT a, PONT b){
+  ELEMENTO temp;
+  temp.id = a->id;
+  temp.posicao = a->posicao;
+  temp.prioridade = a->prioridade;
+  a->id = b->id;
+  a->posicao = b->posicao;
+  a->prioridade = b->prioridade;
+  b->id = temp.id;
+  b->posicao = temp.posicao;
+  b->prioridade = temp.prioridade;
+}
+
 void refazHeapMaximo(PFILA f, PONT atual){
-    int tam = tamanho(f);
-    int max = atual->posicao;
-    int l = esq(f, atual);
-    int r = dir(f, atual);
-    if((f->heap[l]->prioridade > f->heap[max]->prioridade) && (l < tam))
-      max = l;
-    if((f->heap[r]->prioridade > f->heap[max]->prioridade) && (r < tam))
-      max = r;
-    if(max != atual){
-      PONT swap = f->heap[atual->posicao];
-      f->heap[atual->posicao] = f->heap[max];
-      f->heap[max] = swap;
+    int p = pai(f, atual);
+    if(f->heap[p]->prioridade > 0){
+      if(f->heap[atual->posicao]->prioridade > f->heap[p]->prioridade){
+        swapStruct(f->heap[p], f->heap[atual->posicao]);
+        refazHeapMaximo(f, atual);
+      }
     }
-    refazHeapMaximo(f, max);
 }
 
 bool inserirElemento(PFILA f, int id, float prioridade){
   if((id >= MAX) || (id < 0)) return false;
   if(buscaId(f, id)) return false;
-  int tam = tamanho(f);
   PONT novo = (PONT) malloc(sizeof(ELEMENTO));
   novo->id = id;
   novo->prioridade = prioridade;
-  if(f->elementosNoHeap == 0){
-      novo->posicao = 0;
-      f->heap[0] = novo;
-      f->referencias[MAX-2] = novo;
-  } else {
-      f->heap[tam] = novo;
-      refazHeapMaximo(f, novo);
-  }
+  novo->posicao = f->elementosNoHeap;
+  f->heap[novo->posicao] = novo;
+  f->referencias[MAX-f->elementosNoHeap] = novo;
+  refazHeapMaximo(f, f->heap[novo->posicao]);
   f->elementosNoHeap++;
   return true;
 }

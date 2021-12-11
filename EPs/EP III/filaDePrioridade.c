@@ -168,7 +168,10 @@ PONT removerElemento(PFILA f){
   if(tamanho(f) == 0) return NULL;
   PONT res = f->heap[0];
   f->heap[0] = f->heap[f->elementosNoHeap - 1];
+  //f->heap[0]->posicao = 0;
   f->elementosNoHeap--;
+  for(int i = 0; i < f->elementosNoHeap; i++)
+    f->heap[i]->posicao = i;
   heapifyRemocao(f, f->heap[0]);
   for(int i = 0; i < f->elementosNoHeap; i++)
     f->heap[i]->posicao = i;

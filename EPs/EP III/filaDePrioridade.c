@@ -94,9 +94,11 @@ bool inserirElemento(PFILA f, int id, float prioridade){
   novo->prioridade = prioridade;
   novo->posicao = f->elementosNoHeap;
   f->heap[novo->posicao] = novo;
-  f->referencias[MAX-f->elementosNoHeap] = novo;
+  f->referencias[novo->posicao] = novo;
   refazHeapMaximo(f, f->heap[novo->posicao]);
   f->elementosNoHeap++;
+  for(int i = 0; i < f->elementosNoHeap; i++)
+    f->heap[i]->posicao = i;
   return true;
 }
 
@@ -112,6 +114,8 @@ bool aumentarPrioridade(PFILA f, int id, float novaPrioridade){
   if(el->prioridade >= novaPrioridade) return false;
   el->prioridade = novaPrioridade;
   refazHeapMaximo(f, f->heap[el->posicao]);
+  for(int i = 0; i < f->elementosNoHeap; i++)
+    f->heap[i]->posicao = i;
   return true;
 }
 
@@ -131,6 +135,9 @@ bool reduzirPrioridade(PFILA f, int id, float novaPrioridade){
     if(f->heap[i]->prioridade > el->prioridade && i > el->posicao)
       refazHeapMaximo(f, f->heap[i]);
   }
+  for(int i = 0; i < f->elementosNoHeap; i++)
+    f->heap[i]->posicao = i;
+  return true;
 }
 
 int encontraMax(PFILA f){
@@ -159,14 +166,12 @@ void heapifyRemocao(PFILA f, PONT i){
 
 PONT removerElemento(PFILA f){
   if(tamanho(f) == 0) return NULL;
-  PONT res;
-  res->id = f->heap[0]->id;
-  res->posicao = f->heap[0]->posicao;
-  res->prioridade = f->heap[0]->prioridade;
-  swapStruct(f->heap[0], f->heap[f->elementosNoHeap - 1]);
-  f->heap[f->elementosNoHeap - 1] = NULL;
-  int max = encontraMax(f);
-  refazHeapMaximo(f, f->heap[max]);
+  PONT res = f->heap[0];
+  f->heap[0] = f->heap[f->elementosNoHeap - 1];
+  f->elementosNoHeap--;
+  heapifyRemocao(f, f->heap[0]);
+  for(int i = 0; i < f->elementosNoHeap; i++)
+    f->heap[i]->posicao = i;
   return res;
 }
 
